@@ -1,0 +1,261 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ==========================================================================
+   COGNIX "QUIET INTELLIGENCE" DESIGN SYSTEM TOKENS (HSL PALETTES)
+   Source of truth: DESIGN.md
+   ========================================================================== */
+
+:root,
+:root[data-theme="dark"] {
+  /* Core Background & Surfaces */
+  --bg-app: hsl(240, 10%, 4%);             /* #09090b - Deep obsidian base */
+  --bg-surface-1: hsl(240, 6%, 8%);       /* #131316 - Sidebar & panel surfaces */
+  --bg-surface-2: hsl(240, 5%, 12%);      /* #1c1c20 - Cards, inputs, dropdowns */
+  --bg-surface-3: hsl(240, 5%, 16%);      /* #26262b - Hover states & elevated chips */
+
+  /* Ultra-Refined Structural Borders */
+  --border-subtle: hsla(0, 0%, 100%, 0.07); /* Barely-there structural divider */
+  --border-strong: hsla(0, 0%, 100%, 0.14); /* Interactive input & card borders */
+
+  /* Editorial Typography & Foreground */
+  --text-primary: hsl(0, 0%, 98%);         /* #fafafa - High contrast body & headers */
+  --text-secondary: hsl(240, 5%, 65%);     /* #a1a1aa - Subdued description text */
+  --text-muted: hsl(240, 4%, 44%);         /* #71717a - Placeholders & subtle metadata */
+
+  /* Restrained Brand Accents */
+  --brand-primary: hsl(245, 82%, 67%);      /* #6366f1 - Electric Indigo */
+  --brand-primary-hover: hsl(245, 82%, 73%);
+  --brand-glow: hsla(245, 82%, 67%, 0.12);
+  --brand-accent: hsl(188, 86%, 53%);       /* #22d3ee - Cyan highlight */
+
+  /* Semantic Feedback */
+  --color-success: hsl(158, 64%, 52%);
+  --color-warning: hsl(38, 92%, 50%);
+  --color-error: hsl(0, 84%, 60%);
+  --color-info: hsl(217, 91%, 60%);
+
+  color-scheme: dark;
+}
+
+:root[data-theme="light"] {
+  /* Core Background & Surfaces */
+  --bg-app: hsl(0, 0%, 99%);               /* #fcfcfc - Pure minimalist canvas */
+  --bg-surface-1: hsl(0, 0%, 100%);         /* #ffffff - Card & Sidebar pure white */
+  --bg-surface-2: hsl(240, 5%, 96%);       /* #f4f4f5 - Elevated chips & input fields */
+  --bg-surface-3: hsl(240, 6%, 92%);       /* #e4e4e7 - Active state hovers */
+
+  /* Borders & Dividers */
+  --border-subtle: hsla(0, 0%, 0%, 0.07);
+  --border-strong: hsla(0, 0%, 0%, 0.14);
+
+  /* Typography */
+  --text-primary: hsl(240, 10%, 4%);       /* #09090b - Deep editorial black */
+  --text-secondary: hsl(240, 4%, 40%);     /* #52525b */
+  --text-muted: hsl(240, 4%, 60%);         /* #a1a1aa */
+
+  /* Brand Accents */
+  --brand-primary: hsl(245, 75%, 58%);
+  --brand-primary-hover: hsl(245, 75%, 50%);
+  --brand-glow: hsla(245, 75%, 58%, 0.08);
+  --brand-accent: hsl(190, 95%, 39%);
+
+  /* Semantic Feedback */
+  --color-success: hsl(158, 64%, 42%);
+  --color-warning: hsl(38, 92%, 45%);
+  --color-error: hsl(0, 84%, 55%);
+  --color-info: hsl(217, 91%, 50%);
+
+  color-scheme: light;
+}
+
+/* ==========================================================================
+   GLOBAL CSS RESET & BASE STYLES
+   ========================================================================== */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+}
+
+body {
+  background-color: var(--bg-app);
+  color: var(--text-primary);
+  font-family: var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.6;
+}
+
+/* Form Elements Reset & Font Inheritance */
+button, input, optgroup, select, textarea {
+  font-family: inherit;
+  font-size: 100%;
+  line-height: inherit;
+  color: inherit;
+}
+
+/* Anchor Link Defaults */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Text Selection */
+::selection {
+  background-color: var(--brand-primary);
+  color: #ffffff;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* Streaming Cursor Animation */
+@keyframes cursor-pulse {
+  0%, 100% { opacity: 0.15; }
+  50% { opacity: 0.9; }
+}
+
+.animate-streaming-cursor {
+  animation: cursor-pulse 0.9s ease-in-out infinite;
+}
+
+/* Markdown Prose Typography Styles */
+.prose-cognix {
+  color: var(--text-primary);
+  font-size: 0.9375rem;
+  line-height: 1.7;
+}
+
+.prose-cognix p {
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.prose-cognix p:first-child {
+  margin-top: 0;
+}
+
+.prose-cognix p:last-child {
+  margin-bottom: 0;
+}
+
+.prose-cognix h1,
+.prose-cognix h2,
+.prose-cognix h3,
+.prose-cognix h4 {
+  color: var(--text-primary);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  margin-top: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.prose-cognix h2 {
+  font-size: 1.125rem;
+  border-bottom: 1px solid var(--border-subtle);
+  padding-bottom: 0.35rem;
+}
+
+.prose-cognix h3 {
+  font-size: 1rem;
+}
+
+.prose-cognix h4 {
+  font-size: 0.875rem;
+}
+
+.prose-cognix ul {
+  list-style-type: disc;
+  padding-left: 1.25rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.prose-cognix ol {
+  list-style-type: decimal;
+  padding-left: 1.25rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.prose-cognix li {
+  margin-top: 0.25rem;
+  margin-bottom: 0.25rem;
+}
+
+.prose-cognix strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.prose-cognix em {
+  font-style: italic;
+  color: var(--text-secondary);
+}
+
+.prose-cognix a {
+  color: var(--brand-primary);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: opacity 0.15s;
+}
+
+.prose-cognix a:hover {
+  opacity: 0.85;
+}
+
+.prose-cognix blockquote {
+  border-left: 3px solid var(--brand-primary);
+  padding-left: 1rem;
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+.prose-cognix code:not(pre code) {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.825em;
+  background-color: var(--bg-surface-2);
+  color: var(--text-primary);
+  padding: 0.15em 0.4em;
+  border-radius: 4px;
+  border: 1px solid var(--border-subtle);
+}
+
+/* Accessibility: Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

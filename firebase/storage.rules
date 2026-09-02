@@ -1,0 +1,54 @@
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // =========================================================================
+    // 1. USER UPLOADED DOCUMENTS (PDF RAG)
+    // Path: /users/{userId}/documents/{documentId}/{fileName}
+    // =========================================================================
+    match /users/{userId}/documents/{documentId}/{fileName} {
+      // User can read their own documents
+      allow read: if request.auth != null && request.auth.uid == userId;
+
+      // User can write their own documents with size and content-type constraints
+      // - Max Size: 10MB (10 * 1024 * 1024 bytes)
+      // - Content-Type: application/pdf
+      allow write: if request.auth != null 
+        && request.auth.uid == userId
+        && request.resource.size <= 10 * 1024 * 1024
+        && request.resource.contentType == 'application/pdf';
+
+      // User can delete their own documents
+      allow delete: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // =========================================================================
+    // 2. USER AVATAR IMAGES
+    // Path: /users/{userId}/avatars/{fileName}
+    // =========================================================================
+    match /users/{userId}/avatars/{fileName} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null 
+        && request.auth.uid == userId
+        && request.resource.size <= 2 * 1024 * 1024
+        && request.resource.contentType.matches('image/(jpeg|png|webp)');
+      allow delete: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // =========================================================================
+    // 3. USER UPLOADED IMAGES (MULTIMODAL AI)
+    // Path: /users/{userId}/images/{imageId}
+    // =========================================================================
+    match /users/{userId}/images/{imageId} {
+      // Only the authenticated owner can read or delete their images
+      allow read, delete: if request.auth != null && request.auth.uid == userId;
+
+      // Only the authenticated owner can upload images up to 10MB of supported image MIME types
+      allow write: if request.auth != null
+        && request.auth.uid == userId
+        && request.resource.size <= 10 * 1024 * 1024
+        && request.resource.contentType.matches('image/(jpeg|png|webp|gif)');
+    }
+  }
+}
